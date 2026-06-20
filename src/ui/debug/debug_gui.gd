@@ -45,3 +45,9 @@ func _bind_to_player() -> void:
 		ball_tab.name = "Ball Physics"
 		_tab_container.add_child(ball_tab)
 		ball_tab.setup(ball, player.kick_component)
+
+	var display_tab: Control = Control.new()
+	display_tab.set_script(preload("res://src/ui/debug/debug_display_gui.gd"))
+	display_tab.name = "Display"
+	_tab_container.add_child(display_tab)
+	display_tab.setup(player)

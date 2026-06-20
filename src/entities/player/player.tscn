@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://player_entity"]
+[gd_scene load_steps=16 format=3 uid="uid://player_entity"]
 
 [ext_resource type="Script" path="res://src/entities/player/player.gd" id="1_player_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_default.svg" id="2_player_texture"]
@@ -11,6 +11,12 @@
 [ext_resource type="PackedScene" path="res://src/components/stamina_component.tscn" id="9_stamina"]
 [ext_resource type="PackedScene" path="res://src/components/ball_control_component.tscn" id="10_ball_control"]
 [ext_resource type="PackedScene" path="res://src/components/kick_component.tscn" id="11_kick"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_bg"]
+bg_color = Color(0.15, 0.15, 0.15, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_fill"]
+bg_color = Color(0.2, 0.8, 0.2, 1.0)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 12.0
@@ -64,3 +70,23 @@ script = ExtResource("7_sprint_state")
 [node name="BallControlComponent" parent="." instance=ExtResource("10_ball_control")]
 
 [node name="KickComponent" parent="." instance=ExtResource("11_kick")]
+
+[node name="StaminaBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 20.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_stamina_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
+
+[node name="StateLabel" type="Label" parent="."]
+visible = false
+offset_left = -40.0
+offset_top = -28.0
+offset_right = 40.0
+offset_bottom = -14.0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1

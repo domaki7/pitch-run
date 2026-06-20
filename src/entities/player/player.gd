@@ -6,6 +6,8 @@ var movement_component: MovementComponent = null
 var stamina_component: StaminaComponent = null
 var ball_control_component: BallControlComponent = null
 var kick_component: KickComponent = null
+var _stamina_bar: ProgressBar = null
+var _state_label: Label = null
 
 func _ready() -> void:
 	state_machine = $StateMachine as StateMachine
@@ -13,15 +15,30 @@ func _ready() -> void:
 	stamina_component = $StaminaComponent as StaminaComponent
 	ball_control_component = $BallControlComponent as BallControlComponent
 	kick_component = $KickComponent as KickComponent
+	_stamina_bar = $StaminaBar as ProgressBar
+	_state_label = $StateLabel as Label
 
 	var ball_detection: Area2D = $BallDetectionArea as Area2D
 	ball_detection.body_entered.connect(_on_ball_detection_area_body_entered)
+	stamina_component.stamina_changed.connect(_on_stamina_changed)
+	state_machine.transitioned.connect(_on_state_transitioned)
 
 	GameManager.register_player(self)
 	_start_state_machine.call_deferred()
 
 func _start_state_machine() -> void:
 	state_machine.transition_to(&"IdleState")
+
+func set_state_label_visible(is_visible: bool) -> void:
+	_state_label.visible = is_visible
+
+func _on_stamina_changed(current: float, maximum: float) -> void:
+	_stamina_bar.max_value = maximum
+	_stamina_bar.value = current
+	_stamina_bar.visible = current < maximum
+
+func _on_state_transitioned(_old_name: StringName, new_name: StringName) -> void:
+	_state_label.text = new_name
 
 func _on_ball_detection_area_body_entered(body: Node2D) -> void:
 	if ball_control_component.has_ball:

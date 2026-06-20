@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/ui/hud/hud.gd" id="1_hud_script"]
+[ext_resource type="PackedScene" path="res://src/ui/debug/debug_gui.tscn" id="2_debug_gui"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_hud_script")
+
+[node name="DebugGUI" parent="." instance=ExtResource("2_debug_gui")]
