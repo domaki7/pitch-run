@@ -30,6 +30,10 @@ shape = SubResource("CircleShape2D_body")
 texture = ExtResource("2_player_texture")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_right = 1600
+limit_bottom = 900
 
 [node name="BallDetectionArea" type="Area2D" parent="."]
 collision_layer = 0
