@@ -7,6 +7,7 @@ extends Node
 @export var friction: float = 8.0
 @export var sprint_multiplier: float = 1.5
 
+var last_facing_direction: Vector2 = Vector2.DOWN
 var _body: CharacterBody2D = null
 
 func _ready() -> void:
@@ -15,6 +16,7 @@ func _ready() -> void:
 func apply_movement(direction: Vector2, delta: float, is_sprinting: bool = false) -> void:
 	var target_speed: float = speed * (sprint_multiplier if is_sprinting else 1.0)
 	if direction.length_squared() > 0.0:
+		last_facing_direction = direction.normalized()
 		var target_velocity: Vector2 = direction.normalized() * target_speed
 		_body.velocity = _body.velocity.lerp(target_velocity, 1.0 - exp(-acceleration * delta))
 	else:

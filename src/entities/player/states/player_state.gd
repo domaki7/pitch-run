@@ -6,6 +6,8 @@ var movement: MovementComponent = null
 var stamina: StaminaComponent = null
 var ball_control: BallControlComponent = null
 var kick: KickComponent = null
+var tackle_hitbox: TackleHitboxComponent = null
+var tackle_hurtbox: TackleHurtboxComponent = null
 
 func _ready() -> void:
 	await owner.ready
@@ -14,6 +16,8 @@ func _ready() -> void:
 	stamina = player.stamina_component
 	ball_control = player.ball_control_component
 	kick = player.kick_component
+	tackle_hitbox = player.tackle_hitbox_component
+	tackle_hurtbox = player.tackle_hurtbox_component
 
 func get_input_direction() -> Vector2:
 	if not _is_input_enabled():

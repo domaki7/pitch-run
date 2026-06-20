@@ -6,6 +6,8 @@ var movement_component: MovementComponent = null
 var stamina_component: StaminaComponent = null
 var ball_control_component: BallControlComponent = null
 var kick_component: KickComponent = null
+var tackle_hitbox_component: TackleHitboxComponent = null
+var tackle_hurtbox_component: TackleHurtboxComponent = null
 var _stamina_bar: ProgressBar = null
 var _state_label: Label = null
 
@@ -15,6 +17,8 @@ func _ready() -> void:
 	stamina_component = $StaminaComponent as StaminaComponent
 	ball_control_component = $BallControlComponent as BallControlComponent
 	kick_component = $KickComponent as KickComponent
+	tackle_hitbox_component = $TackleHitboxComponent as TackleHitboxComponent
+	tackle_hurtbox_component = $TackleHurtboxComponent as TackleHurtboxComponent
 	_stamina_bar = $StaminaBar as ProgressBar
 	_state_label = $StateLabel as Label
 

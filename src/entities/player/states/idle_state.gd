@@ -24,6 +24,12 @@ func process_physics(delta: float) -> void:
 					kick.shoot(ball, get_mouse_target())
 				return
 
+	if _is_input_enabled() and not ball_control.has_ball:
+		if Input.is_action_just_pressed(&"tackle"):
+			if stamina.current_stamina >= stamina.tackle_cost:
+				transition_requested.emit(self, &"TackleState")
+				return
+
 	var direction: Vector2 = get_input_direction()
 	if direction.length_squared() > 0.0:
 		if ball_control.has_ball:

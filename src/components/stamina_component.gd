@@ -9,7 +9,7 @@ signal stamina_depleted
 @export var regen_rate: float = 15.0
 @export var regen_delay: float = 1.0
 @export var sprint_drain_rate: float = 20.0
-@export var tackle_cost: float = 25.0
+@export var tackle_cost: float = 15.0
 
 var current_stamina: float = 0.0
 var is_sprinting: bool = false

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="PackedScene" path="res://levels/pitch.tscn" id="1_pitch"]
 [ext_resource type="PackedScene" path="res://src/entities/player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://src/entities/ball/ball.tscn" id="3_ball"]
 [ext_resource type="PackedScene" path="res://src/ui/hud/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://src/entities/dummy_opponent/dummy_opponent.tscn" id="5_dummy"]
 
 [node name="Main" type="Node2D"]
 
@@ -12,7 +13,10 @@
 [node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector2(400, 450)
 
+[node name="DummyOpponent" parent="." instance=ExtResource("5_dummy")]
+position = Vector2(900, 450)
+
 [node name="Ball" parent="." instance=ExtResource("3_ball")]
-position = Vector2(800, 450)
+position = Vector2(880, 450)
 
 [node name="HUD" parent="." instance=ExtResource("4_hud")]

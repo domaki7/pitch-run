@@ -46,6 +46,14 @@ func _bind_to_player() -> void:
 		_tab_container.add_child(ball_tab)
 		ball_tab.setup(ball, player.kick_component)
 
+	var tackle_state: PlayerTackleState = player.state_machine.get_node("TackleState") as PlayerTackleState
+	if tackle_state and player.tackle_hitbox_component and player.tackle_hurtbox_component:
+		var combat_tab: Control = Control.new()
+		combat_tab.set_script(preload("res://src/ui/debug/debug_combat_gui.gd"))
+		combat_tab.name = "Combat"
+		_tab_container.add_child(combat_tab)
+		combat_tab.setup(tackle_state, player.tackle_hitbox_component, player.tackle_hurtbox_component)
+
 	var display_tab: Control = Control.new()
 	display_tab.set_script(preload("res://src/ui/debug/debug_display_gui.gd"))
 	display_tab.name = "Display"

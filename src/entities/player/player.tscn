@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://player_entity"]
+[gd_scene load_steps=19 format=3 uid="uid://player_entity"]
 
 [ext_resource type="Script" path="res://src/entities/player/player.gd" id="1_player_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_default.svg" id="2_player_texture"]
@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" path="res://src/components/stamina_component.tscn" id="9_stamina"]
 [ext_resource type="PackedScene" path="res://src/components/ball_control_component.tscn" id="10_ball_control"]
 [ext_resource type="PackedScene" path="res://src/components/kick_component.tscn" id="11_kick"]
+[ext_resource type="Script" path="res://src/entities/player/states/tackle_state.gd" id="12_tackle_state"]
+[ext_resource type="PackedScene" path="res://src/components/tackle_hitbox_component.tscn" id="13_tackle_hitbox"]
+[ext_resource type="PackedScene" path="res://src/components/tackle_hurtbox_component.tscn" id="14_tackle_hurtbox"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_bg"]
 bg_color = Color(0.15, 0.15, 0.15, 0.8)
@@ -63,6 +66,9 @@ script = ExtResource("6_dribble_state")
 [node name="SprintState" type="Node" parent="StateMachine"]
 script = ExtResource("7_sprint_state")
 
+[node name="TackleState" type="Node" parent="StateMachine"]
+script = ExtResource("12_tackle_state")
+
 [node name="MovementComponent" parent="." instance=ExtResource("8_movement")]
 
 [node name="StaminaComponent" parent="." instance=ExtResource("9_stamina")]
@@ -70,6 +76,10 @@ script = ExtResource("7_sprint_state")
 [node name="BallControlComponent" parent="." instance=ExtResource("10_ball_control")]
 
 [node name="KickComponent" parent="." instance=ExtResource("11_kick")]
+
+[node name="TackleHitboxComponent" parent="." instance=ExtResource("13_tackle_hitbox")]
+
+[node name="TackleHurtboxComponent" parent="." instance=ExtResource("14_tackle_hurtbox")]
 
 [node name="StaminaBar" type="ProgressBar" parent="."]
 visible = false

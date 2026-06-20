@@ -30,6 +30,11 @@ func process_physics(delta: float) -> void:
 		_drop_to_base_state()
 		return
 
+	if not ball_control.has_ball and Input.is_action_just_pressed(&"tackle"):
+		if stamina.current_stamina >= stamina.tackle_cost:
+			transition_requested.emit(self, &"TackleState")
+			return
+
 	if ball_control.has_ball:
 		if Input.is_action_just_pressed(&"pass_ball"):
 			var ball: RigidBody2D = ball_control.release_ball()

@@ -15,6 +15,11 @@ func process_physics(delta: float) -> void:
 		transition_requested.emit(self, &"IdleState")
 		return
 
+	if _is_input_enabled() and Input.is_action_just_pressed(&"tackle"):
+		if stamina.current_stamina >= stamina.tackle_cost:
+			transition_requested.emit(self, &"TackleState")
+			return
+
 	if _is_input_enabled() and Input.is_action_just_pressed(&"sprint"):
 		if stamina.start_sprint():
 			transition_requested.emit(self, &"SprintState")
