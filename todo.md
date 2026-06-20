@@ -2,35 +2,38 @@
 
 Target: Player + Ball + Pitch + Debug GUI. No opponents, teammates, scoring, tackle, or roguelike systems.
 
-## Phase 1 — Project Foundation
+## Phase 1 — Project Foundation ✓
 
-- [ ] Create directory structure (src/components/, src/entities/player/states/, src/entities/ball/, src/states/, src/systems/, src/ui/debug/, src/ui/hud/, assets/sprites/player/, assets/sprites/ball/, assets/sprites/pitch/, levels/)
-- [ ] Register input actions in project.godot (move_up, move_down, move_left, move_right, pass_ball, shoot, sprint)
-- [ ] Configure physics collision layers 1-4 in project.godot (Pitch, PlayerTeam, OpponentTeam, Ball)
-- [ ] Create EventBus autoload (src/systems/event_bus.gd) — signal declarations only
-- [ ] Create GameManager autoload (src/systems/game_manager.gd) — game state enum, current_player ref
+- [x] Create directory structure (src/components/, src/entities/player/states/, src/entities/ball/, src/states/, src/systems/, src/ui/debug/, src/ui/hud/, assets/sprites/player/, assets/sprites/ball/, assets/sprites/pitch/, levels/)
+- [x] Register input actions in project.godot (move_up, move_down, move_left, move_right, pass_ball, shoot, sprint)
+- [x] Configure physics collision layers 1-4 in project.godot (Pitch, PlayerTeam, OpponentTeam, Ball)
+- [x] Create EventBus autoload (src/systems/event_bus.gd) — signal declarations only
+- [x] Create GameManager autoload (src/systems/game_manager.gd) — game state enum, current_player ref
 
-## Phase 2 — State Machine Framework
+## Phase 2 — State Machine Framework ✓
 
-- [ ] Create State base class (src/states/state.gd) — enter/exit/process/physics_process/input virtuals, transition_requested signal
-- [ ] Create StateMachine component (src/components/state_machine.gd + .tscn) — manages child State nodes, handles transitions via StringName
+- [x] Create State base class (src/states/state.gd) — enter/exit/process/physics_process/input virtuals, transition_requested signal
+- [x] Create StateMachine component (src/components/state_machine.gd + .tscn) — manages child State nodes, handles transitions via StringName
 
-## Phase 3 — Core Components
+## Phase 3 — Core Components ✓
 
-- [ ] Create MovementComponent (src/components/movement_component.gd + .tscn) — apply_movement(direction, delta), @export speed/acceleration/friction/sprint_multiplier
-- [ ] Create StaminaComponent (src/components/stamina_component.gd + .tscn) — sprint drain, regen with delay, @export max_stamina/regen_rate/regen_delay/sprint_drain_rate, signals: stamina_changed/stamina_depleted
-- [ ] Create BallControlComponent (src/components/ball_control_component.gd + .tscn) — dribble logic, ball follows entity at offset, signals: ball_received/ball_lost
-- [ ] Create KickComponent (src/components/kick_component.gd + .tscn) — applies force to ball RigidBody2D, @export pass_force/shot_force
+- [x] Create MovementComponent (src/components/movement_component.gd + .tscn) — apply_movement(direction, delta), @export speed/acceleration/friction/sprint_multiplier
+- [x] Create StaminaComponent (src/components/stamina_component.gd + .tscn) — sprint drain, regen with delay, @export max_stamina/regen_rate/regen_delay/sprint_drain_rate, signals: stamina_changed/stamina_depleted
+- [x] Create BallControlComponent (src/components/ball_control_component.gd + .tscn) — dribble logic, ball follows entity at offset, signals: ball_received/ball_lost
+- [x] Create KickComponent (src/components/kick_component.gd + .tscn) — applies force to ball RigidBody2D, @export pass_force/shot_force
 
-## Phase 4 — SVG Assets
+## Phase 4 — SVG Assets ✓
 
-- [ ] Create player SVG (assets/sprites/player/player_default.svg) — top-down geometric shape, flat team color, readable at ~32px
-- [ ] Create ball SVG (assets/sprites/ball/ball.svg) — simple circle, distinct color
-- [ ] Create pitch boundary/line visuals (assets/sprites/pitch/) — optional, can use ColorRect initially
+- [x] Create player SVG (assets/sprites/player/player_default.svg) — top-down geometric shape, flat team color, readable at ~32px
+- [x] Create ball SVG (assets/sprites/ball/ball.svg) — simple circle, distinct color
+- [x] Create pitch boundary/line visuals (assets/sprites/pitch/) — optional, can use ColorRect initially
 
-## Phase 5 — Ball Entity
+## Phase 5 — Ball Entity ✓
 
-- [ ] Create Ball scene (src/entities/ball/ball.tscn + ball.gd) — RigidBody2D, PhysicsMaterial2D (friction + damping), CollisionShape2D (CircleShape2D), Sprite2D, BallState enum (FREE/POSSESSED/IN_FLIGHT), possessor tracking
+- [x] Create Ball scene (src/entities/ball/ball.tscn + ball.gd) — RigidBody2D, PhysicsMaterial2D (friction + damping), CollisionShape2D (CircleShape2D), Sprite2D, BallState enum (FREE/POSSESSED/IN_FLIGHT), possessor tracking
+- [x] Add current_ball ref + register_ball() to GameManager
+- [x] Wire BallControlComponent and KickComponent to call Ball state methods
+- [x] Create temporary test scene (levels/test_scene.tscn) — ball + boundary walls, set as main scene. Replace with proper pitch scene in Phase 8.
 
 ## Phase 6 — Player States
 

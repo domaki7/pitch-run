@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ball_entity"]
+
+[ext_resource type="Script" path="res://src/entities/ball/ball.gd" id="1_ball_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ball/ball.svg" id="2_ball_texture"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ball"]
+radius = 5.0
+
+[node name="Ball" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 7
+gravity_scale = 0.0
+script = ExtResource("1_ball_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ball")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ball_texture")

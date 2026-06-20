@@ -25,6 +25,8 @@ func receive_ball(ball: RigidBody2D) -> void:
 	_ball = ball
 	has_ball = true
 	_ball.freeze = true
+	if _ball.has_method(&"set_possessed"):
+		_ball.set_possessed(_body)
 	ball_received.emit()
 
 func release_ball() -> RigidBody2D:
@@ -32,6 +34,8 @@ func release_ball() -> RigidBody2D:
 		return null
 	var ball: RigidBody2D = _ball
 	ball.freeze = false
+	if ball.has_method(&"set_free"):
+		ball.set_free()
 	has_ball = false
 	_ball = null
 	ball_lost.emit()

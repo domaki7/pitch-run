@@ -8,6 +8,8 @@ extends Node
 func kick_toward(ball: RigidBody2D, target_position: Vector2, force: float) -> void:
 	var direction: Vector2 = (target_position - ball.global_position).normalized()
 	ball.apply_central_impulse(direction * force)
+	if ball.has_method(&"set_in_flight"):
+		ball.set_in_flight()
 
 func pass_ball(ball: RigidBody2D, target_position: Vector2) -> void:
 	kick_toward(ball, target_position, pass_force)
