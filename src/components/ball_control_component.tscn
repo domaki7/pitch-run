@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ball_control_component"]
+
+[ext_resource type="Script" path="res://src/components/ball_control_component.gd" id="1_ball_control"]
+
+[node name="BallControlComponent" type="Node"]
+script = ExtResource("1_ball_control")
