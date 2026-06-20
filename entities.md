@@ -29,7 +29,7 @@ The player script is a thin orchestrator: wires component references in `_ready(
 
 ## Player States
 
-All extend `PlayerState` (`src/entities/player/states/player_state.gd`), which provides `player`, `movement`, `stamina`, `ball_control`, `kick`, `tackle_hitbox`, `tackle_hurtbox` refs, `get_input_direction() -> Vector2` (WASD, no camera basis needed for top-down), and `_is_input_enabled() -> bool` (returns false when debug GUI is open). All input checks in states are guarded by `_is_input_enabled()`.
+All extend `PlayerState` (`src/entities/player/states/player_state.gd`), which provides `player`, `movement`, `stamina`, `ball_control`, `kick` refs, `get_input_direction() -> Vector2` (WASD, no camera basis needed for top-down), and `_is_input_enabled() -> bool` (returns false when `GameManager.is_input_disabled()` -- debug GUI open or match state is not PLAYING). All input checks in states are guarded by `_is_input_enabled()`.
 
 - **IdleState** -- standing still, no ball. Transitions to RunState on movement input, DribbleState if receiving ball.
 - **RunState** -- moving without ball. Transitions to DribbleState on ball pickup, TackleState on tackle input, SprintState on sprint input.
@@ -108,11 +108,13 @@ No full state machine needed -- the ball is a passive physics object controlled 
 ## Goal Zones
 
 ```
-GoalZone (Area2D)                    goal_zone.gd, layer 9
-  CollisionShape2D                   RectangleShape2D covering goal mouth
+GoalZone (Area2D)                    goal_zone.gd, layer 9 (value 256), mask 4 (Ball, value 8)
+  CollisionShape2D                   RectangleShape2D(30, 220) covering goal mouth
+  GoalPosts (Sprite2D)              goal_posts.svg
+  NetArea (Sprite2D)                 goal_net.svg, positioned behind wall based on team
 ```
 
-Detects ball entering via `body_entered`. Emits `EventBus.goal_scored(team, scorer)`. Two instances per match (one per end). `@export var team: int` identifies which team's goal this is.
+Detects ball entering via `body_entered`. Emits `EventBus.goal_scored(scoring_team, scored_on_team)`. Two instances in pitch.tscn: GoalLeft at (0, 450) with team=1, GoalRight at (1600, 450) with team=2. Convention: team 1 = home/player (defends left), team 2 = away/opponent (defends right). Uses `_has_scored_this_play` flag to prevent double-detection from ball bouncing. Joins `"goal_zones"` group for batch reset via `get_tree().call_group()`.
 
 ## Input Actions
 

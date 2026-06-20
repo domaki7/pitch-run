@@ -15,8 +15,8 @@ Component-based entity composition. Entities (player, teammates, opponents) are 
 
 Registered in project.godot. Access globally by name. **Autoload scripts must NOT use `class_name`** -- the autoload name already registers a global identifier, and `class_name` with the same name causes a parser error.
 
-- **GameManager** -- game state (playing/paused/loading), current player reference, current match state, score tracking
-- **EventBus** -- signal-only singleton for decoupled cross-system events. No logic, only signal declarations.
+- **GameManager** -- match state machine (KICKOFF/PLAYING/GOAL_SCORED/MATCH_OVER), current player/ball references, score tracking (first to 3), kickoff reset flow, `is_input_disabled()` centralizes input gating (debug GUI + match state)
+- **EventBus** -- signal-only singleton for decoupled cross-system events. No logic, only signal declarations. Current signals: `goal_scored(scoring_team, scored_on_team)`, `match_ended(winning_team, home_score, away_score)`, `kickoff_started`.
 - **RunManager** -- current run state (run seed, match number, accumulated rewards, active modifiers, run stats). Manages run lifecycle: start, advance match, end (victory/permadeath). Persists within a run but resets on new run.
 - **MetaProgressionManager** -- persistent unlocks, currency that survives permadeath, unlock tree state. Reads/writes via SaveManager. Tracks lifetime stats.
 - **SaveManager** -- save/load to user://, meta progression persistence, run history

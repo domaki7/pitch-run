@@ -40,6 +40,13 @@ func _on_stamina_changed(current: float, maximum: float) -> void:
 func _on_state_transitioned(_old_name: StringName, new_name: StringName) -> void:
 	_state_label.text = new_name
 
+func reset_for_kickoff(start_pos: Vector2) -> void:
+	if ball_control_component.has_ball:
+		ball_control_component.release_ball()
+	global_position = start_pos
+	velocity = Vector2.ZERO
+	state_machine.transition_to(&"IdleState")
+
 func _on_ball_detection_area_body_entered(body: Node2D) -> void:
 	if ball_control_component.has_ball:
 		return

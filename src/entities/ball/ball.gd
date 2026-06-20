@@ -43,6 +43,14 @@ func set_free() -> void:
 	current_state = BallState.FREE
 	state_changed.emit(current_state)
 
+func reset_to_position(pos: Vector2) -> void:
+	freeze = true
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0.0
+	global_position = pos
+	set_free()
+	freeze = false
+
 func set_in_flight() -> void:
 	possessor = null
 	current_state = BallState.IN_FLIGHT

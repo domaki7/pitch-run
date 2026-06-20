@@ -12,6 +12,20 @@ Tabbed in-game debug panel (`src/ui/debug/`) for tweaking component `@export` va
 6. If tackle has damage (roguelike upgrade): optionally call `health_component.take_damage()`
 7. If health <= 0 (roguelike): entity is "injured out" -- removed from current match
 
+## Goal Scoring + Kickoff Flow
+GameManager orchestrates the full match flow via MatchState enum (KICKOFF/PLAYING/GOAL_SCORED/MATCH_OVER).
+
+1. Ball enters GoalZone Area2D → `body_entered` fires
+2. GoalZone emits `EventBus.goal_scored(scoring_team, scored_on_team)` (guarded by `_has_scored_this_play` to prevent double-detection)
+3. GameManager increments score, sets state to GOAL_SCORED → `is_input_disabled()` returns true → player decelerates to idle
+4. After `GOAL_CELEBRATION_DELAY` (1.5s), GameManager checks win condition (first to `GOALS_TO_WIN` = 3)
+5. **If not won:** `_begin_kickoff(scored_on_team)` → state = KICKOFF, emits `EventBus.kickoff_started`, resets player/ball/goal zones to starting positions, then after `KICKOFF_DELAY` (0.5s) → state = PLAYING
+6. **If won:** `_end_match(winner)` → state = MATCH_OVER, emits `EventBus.match_ended` → HUD shows win/lose overlay → any key press triggers `restart_match()`
+
+**Reset methods:** `Player.reset_for_kickoff(pos)` releases ball + teleports + transitions to IdleState. `Ball.reset_to_position(pos)` freezes, clears velocity, teleports, unfreezes. Goal zones reset `_has_scored_this_play` via group call.
+
+**Input gating:** `GameManager.is_input_disabled()` returns true when `is_debug_gui_open` OR `current_state != PLAYING`. All player states check this via `PlayerState._is_input_enabled()`.
+
 ## Run Management Pattern
 RunManager manages the roguelike run lifecycle:
 
