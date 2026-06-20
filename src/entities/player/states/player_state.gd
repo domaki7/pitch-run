@@ -24,4 +24,4 @@ func get_mouse_target() -> Vector2:
 	return player.get_global_mouse_position()
 
 func _is_input_enabled() -> bool:
-	return true
+	return not GameManager.is_debug_gui_open

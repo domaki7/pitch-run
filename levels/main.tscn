@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="PackedScene" path="res://levels/pitch.tscn" id="1_pitch"]
 [ext_resource type="PackedScene" path="res://src/entities/player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://src/entities/ball/ball.tscn" id="3_ball"]
+[ext_resource type="PackedScene" path="res://src/ui/debug/debug_gui.tscn" id="4_debug"]
 
 [node name="Main" type="Node2D"]
 
@@ -13,3 +14,8 @@ position = Vector2(400, 450)
 
 [node name="Ball" parent="." instance=ExtResource("3_ball")]
 position = Vector2(800, 450)
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="DebugGUI" parent="DebugLayer" instance=ExtResource("4_debug")]
