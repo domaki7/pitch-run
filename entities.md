@@ -6,7 +6,7 @@ Player scene tree (`src/entities/player/player.tscn`):
 ```
 Player (CharacterBody2D)             player.gd, layer 2, mask 1+3+4
   CollisionShape2D                   CircleShape2D
-  Sprite2D                           Player sprite (or AnimatedSprite2D)
+  Sprite2D                           assets/sprites/player/player_default.svg
   StateMachine                       state_machine.gd
     IdleState                        idle_state.gd
     RunState                         run_state.gd
@@ -43,7 +43,7 @@ All extend `PlayerState` (`src/entities/player/states/player_state.gd`), which p
 ```
 Teammate (CharacterBody2D)           teammate.gd, layer 2, mask 1+3+4
   CollisionShape2D                   CircleShape2D
-  Sprite2D                           Teammate sprite
+  Sprite2D                           assets/sprites/teammates/teammate_default.svg
   StateMachine                       state_machine.gd
     IdleState                        Positioned in formation
     RunToPositionState               Moving to tactical position
@@ -68,7 +68,7 @@ Player switching (Tab key) transfers camera and input control to the nearest tea
 ```
 Opponent (CharacterBody2D)           opponent.gd, layer 3, mask 1+2+4
   CollisionShape2D                   CircleShape2D
-  Sprite2D                           Opponent sprite
+  Sprite2D                           assets/sprites/opponents/opponent_default.svg
   StateMachine                       state_machine.gd
     IdleState                        Positioned in formation
     ChaseState                       Pursuing ball carrier
@@ -92,7 +92,7 @@ Base state `OpponentState extends State` provides helpers: `get_ball_carrier() -
 ```
 Ball (RigidBody2D)                   ball.gd, layer 4, mask 1+2+3
   CollisionShape2D                   CircleShape2D
-  Sprite2D                           Ball sprite
+  Sprite2D                           assets/sprites/ball/ball.svg
 ```
 
 The ball is a RigidBody2D -- physics forces for kicks, passes, shots. Friction and damping applied via PhysicsMaterial2D. The ball script tracks possession with a simple enum state:

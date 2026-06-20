@@ -11,6 +11,12 @@
 - **Constants:** `SCREAMING_SNAKE_CASE`
 - **Enums:** `PascalCase` name, `SCREAMING_SNAKE_CASE` values
 
+## Asset Naming
+
+SVG files follow `snake_case` like all other files:
+- **Pattern:** `<entity>_<variant>.svg` (e.g., `player_default.svg`, `opponent_striker.svg`, `ball.svg`)
+- **Directories:** `assets/sprites/<category>/` matches entity categories
+
 ## Code Example
 
 ```gdscript

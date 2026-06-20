@@ -37,6 +37,30 @@ res://
   addons/               Third-party editor plugins
 ```
 
+## Art / Visuals
+
+All game visuals are **Claude-generated SVGs**. No external art tools or asset packs.
+
+**Style:** Top-down minimal — simple geometric shapes, flat colors, clear silhouettes readable at small sizes.
+
+**Location:** `assets/sprites/` organized by entity type:
+```
+assets/sprites/
+  player/               Player character SVGs
+  teammates/            Teammate variant SVGs
+  opponents/            Opponent variant SVGs
+  ball/                 Ball SVG
+  ui/                   UI element SVGs (icons, indicators)
+  pitch/                Pitch markings, goals, boundaries
+```
+
+**SVG Rules:**
+- Use `viewBox` for consistent scaling (Godot imports SVGs as textures automatically)
+- Flat fills only — no gradients, no filters
+- Distinct team colors for player vs opponent differentiation
+- Keep shapes simple — must read clearly at ~32px on screen
+- One SVG per visual variant (e.g., `player_default.svg`, `opponent_striker.svg`)
+
 ## Physics Collision Layers
 
 | Layer | Name | Purpose |
