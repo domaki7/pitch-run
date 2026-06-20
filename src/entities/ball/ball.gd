@@ -7,6 +7,7 @@ enum BallState { FREE, POSSESSED, IN_FLIGHT }
 
 @export_group("Physics")
 @export var ball_linear_damp: float = 3.0
+@export var free_speed_threshold: float = 10.0
 @export var ball_angular_damp: float = 1.0
 @export var ball_bounce: float = 0.3
 @export var ball_friction: float = 0.8
@@ -26,6 +27,11 @@ func _ready() -> void:
 	physics_material_override = mat
 
 	GameManager.register_ball(self)
+
+func _physics_process(_delta: float) -> void:
+	if current_state == BallState.IN_FLIGHT:
+		if linear_velocity.length_squared() < free_speed_threshold * free_speed_threshold:
+			set_free()
 
 func set_possessed(by: CharacterBody2D) -> void:
 	possessor = by
