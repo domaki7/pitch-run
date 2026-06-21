@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 EventBus="*res://src/systems/event_bus.gd"
 GameManager="*res://src/systems/game_manager.gd"
+RunManager="*res://src/systems/run_manager.gd"
 
 [display]
 

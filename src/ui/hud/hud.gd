@@ -5,13 +5,36 @@ var _away_score_label: Label = null
 var _match_end_overlay: ColorRect = null
 var _result_label: Label = null
 var _final_score_label: Label = null
+var _restart_label: Label = null
+var _match_number_label: Label = null
+var _lives_label: Label = null
+var _last_winning_team: int = 0
+
 
 func _ready() -> void:
 	_build_score_display()
+	_build_run_info_display()
 	_build_match_end_overlay()
 	EventBus.goal_scored.connect(_on_goal_scored)
 	EventBus.match_ended.connect(_on_match_ended)
 	EventBus.kickoff_started.connect(_on_kickoff_started)
+	EventBus.run_started.connect(_on_run_started)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if GameManager.current_state != GameManager.MatchState.MATCH_OVER:
+		return
+	if not event.is_pressed():
+		return
+
+	if _last_winning_team == 1:
+		RunManager.advance_to_next_match()
+	elif RunManager.run_data and RunManager.run_data.lives_remaining > 0:
+		RunManager.retry_match()
+	else:
+		RunManager.end_run("permadeath")
+		RunManager.start_run()
+
 
 func _build_score_display() -> void:
 	var container: HBoxContainer = HBoxContainer.new()
@@ -44,6 +67,27 @@ func _build_score_display() -> void:
 
 	add_child(container)
 
+
+func _build_run_info_display() -> void:
+	var container: VBoxContainer = VBoxContainer.new()
+	container.name = "RunInfo"
+	container.position = Vector2(16, 10)
+
+	var theme_small: Theme = Theme.new()
+	theme_small.set_font_size("font_size", "Label", 18)
+	container.theme = theme_small
+
+	_match_number_label = Label.new()
+	_match_number_label.text = "Match 1"
+	container.add_child(_match_number_label)
+
+	_lives_label = Label.new()
+	_lives_label.text = ""
+	container.add_child(_lives_label)
+
+	add_child(container)
+
+
 func _build_match_end_overlay() -> void:
 	_match_end_overlay = ColorRect.new()
 	_match_end_overlay.name = "MatchEndOverlay"
@@ -74,26 +118,58 @@ func _build_match_end_overlay() -> void:
 	_final_score_label.theme = score_theme
 	vbox.add_child(_final_score_label)
 
-	var restart_label: Label = Label.new()
-	restart_label.text = "Press any key to restart"
-	restart_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_restart_label = Label.new()
+	_restart_label.text = "Press any key to continue"
+	_restart_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var restart_theme: Theme = Theme.new()
 	restart_theme.set_font_size("font_size", "Label", 18)
-	restart_label.theme = restart_theme
-	vbox.add_child(restart_label)
+	_restart_label.theme = restart_theme
+	vbox.add_child(_restart_label)
 
 	add_child(_match_end_overlay)
+
 
 func _on_goal_scored(_scoring_team: int, _scored_on_team: int) -> void:
 	_home_score_label.text = str(GameManager.home_score)
 	_away_score_label.text = str(GameManager.away_score)
 
+
 func _on_match_ended(winning_team: int, home_score: int, away_score: int) -> void:
+	_last_winning_team = winning_team
 	_match_end_overlay.visible = true
-	_result_label.text = "You Win!" if winning_team == 1 else "You Lose!"
 	_final_score_label.text = str(home_score) + " - " + str(away_score)
+
+	if winning_team == 1:
+		_result_label.text = "Match Won!"
+		_restart_label.text = "Press any key to continue"
+	elif RunManager.run_data and RunManager.run_data.lives_remaining > 0:
+		_result_label.text = "Match Lost!"
+		_restart_label.text = str(RunManager.run_data.lives_remaining) + " lives remaining. Press any key to retry"
+	else:
+		_result_label.text = "Run Over!"
+		var match_num: int = RunManager.run_data.match_number if RunManager.run_data else 1
+		_restart_label.text = "Reached Match " + str(match_num) + ". Press any key to restart"
+
 
 func _on_kickoff_started() -> void:
 	_match_end_overlay.visible = false
 	_home_score_label.text = str(GameManager.home_score)
 	_away_score_label.text = str(GameManager.away_score)
+	_update_run_info()
+
+
+func _on_run_started(_run_data: RunData) -> void:
+	_update_run_info()
+
+
+func _update_run_info() -> void:
+	if RunManager.run_data:
+		_match_number_label.text = "Match " + str(RunManager.run_data.match_number)
+		if RunManager.run_data.max_lives > 0:
+			_lives_label.text = "Lives: " + str(RunManager.run_data.lives_remaining)
+			_lives_label.visible = true
+		else:
+			_lives_label.visible = false
+	else:
+		_match_number_label.text = "Match 1"
+		_lives_label.visible = false

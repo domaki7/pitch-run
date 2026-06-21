@@ -9,20 +9,18 @@ const KICKOFF_DELAY: float = 0.5
 var current_state: MatchState = MatchState.PLAYING
 var current_player: CharacterBody2D = null
 var current_ball: RigidBody2D = null
+var current_opponent: CharacterBody2D = null
 var is_debug_gui_open: bool = false
 var home_score: int = 0
 var away_score: int = 0
 
 var _player_start_position: Vector2 = Vector2.ZERO
 var _ball_start_position: Vector2 = Vector2.ZERO
+var _opponent_start_position: Vector2 = Vector2.ZERO
 var _scored_on_team: int = 0
 
 func _ready() -> void:
 	EventBus.goal_scored.connect(_on_goal_scored)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if current_state == MatchState.MATCH_OVER and event.is_pressed():
-		restart_match()
 
 func register_player(player: CharacterBody2D) -> void:
 	current_player = player
@@ -31,6 +29,10 @@ func register_player(player: CharacterBody2D) -> void:
 func register_ball(ball: RigidBody2D) -> void:
 	current_ball = ball
 	_ball_start_position = ball.global_position
+
+func register_opponent(opponent: CharacterBody2D) -> void:
+	current_opponent = opponent
+	_opponent_start_position = opponent.global_position
 
 func is_input_disabled() -> bool:
 	return is_debug_gui_open or current_state != MatchState.PLAYING
@@ -76,6 +78,8 @@ func _on_kickoff_ready() -> void:
 func _reset_positions(_possession_team: int) -> void:
 	if current_player:
 		(current_player as Player).reset_for_kickoff(_player_start_position)
+	if current_opponent:
+		(current_opponent as Opponent).reset_for_kickoff(_opponent_start_position)
 	if current_ball:
 		(current_ball as Ball).reset_to_position(_ball_start_position)
 	get_tree().call_group(&"goal_zones", &"reset")

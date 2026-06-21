@@ -59,3 +59,11 @@ func _bind_to_player() -> void:
 	display_tab.name = "Display"
 	_tab_container.add_child(display_tab)
 	display_tab.setup(player)
+
+	var opponents: Array[Node] = get_tree().get_nodes_in_group("opponents")
+	if opponents.size() > 0:
+		var ai_tab: Control = Control.new()
+		ai_tab.set_script(preload("res://src/ui/debug/debug_ai_gui.gd"))
+		ai_tab.name = "AI"
+		_tab_container.add_child(ai_tab)
+		ai_tab.setup(opponents[0])
