@@ -22,7 +22,7 @@ func process_physics(delta: float) -> void:
 	if is_ball_free() and get_ball_distance() < interrupt_chase_distance:
 		transition_requested.emit(self, &"ChaseState")
 		return
-	if is_player_carrying_ball() and get_player_distance() < interrupt_chase_distance:
+	if is_player_team_carrying_ball() and get_player_distance() < interrupt_chase_distance:
 		transition_requested.emit(self, &"ChaseState")
 		return
 	var home: Vector2 = get_home_position()

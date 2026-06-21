@@ -1,4 +1,4 @@
-class_name Player
+class_name Teammate
 extends CharacterBody2D
 
 var state_machine: StateMachine = null
@@ -9,7 +9,7 @@ var kick_component: KickComponent = null
 var tackle_hitbox_component: TackleHitboxComponent = null
 var tackle_hurtbox_component: TackleHurtboxComponent = null
 var start_position: Vector2 = Vector2.ZERO
-var is_player_controlled: bool = true
+var is_player_controlled: bool = false
 var _stamina_bar: ProgressBar = null
 var _state_label: Label = null
 
@@ -30,11 +30,12 @@ func _ready() -> void:
 	state_machine.transitioned.connect(_on_state_transitioned)
 
 	start_position = global_position
-	GameManager.register_player(self)
+	add_to_group("teammates")
+	GameManager.register_teammate(self)
 	_start_state_machine.call_deferred()
 
 func _start_state_machine() -> void:
-	state_machine.transition_to(&"IdleState")
+	state_machine.transition_to(&"AIIdleState")
 
 func set_player_controlled(controlled: bool) -> void:
 	is_player_controlled = controlled
@@ -51,8 +52,8 @@ func reset_for_kickoff(start_pos: Vector2) -> void:
 		ball_control_component.release_ball()
 	global_position = start_pos
 	velocity = Vector2.ZERO
-	is_player_controlled = true
-	state_machine.transition_to(&"IdleState")
+	is_player_controlled = false
+	state_machine.transition_to(&"AIIdleState")
 
 func _on_stamina_changed(current: float, maximum: float) -> void:
 	_stamina_bar.max_value = maximum

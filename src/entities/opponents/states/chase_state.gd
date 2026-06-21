@@ -18,7 +18,7 @@ func process_physics(delta: float) -> void:
 	if is_opponent_carrying_ball():
 		transition_requested.emit(self, &"DribbleState")
 		return
-	if is_player_carrying_ball():
+	if is_player_team_carrying_ball():
 		var dir: Vector2 = get_player_direction()
 		movement.apply_movement(dir, delta)
 		if get_player_distance() <= tackle_range and stamina.current_stamina >= stamina.tackle_cost:

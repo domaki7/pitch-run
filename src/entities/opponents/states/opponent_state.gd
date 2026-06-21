@@ -22,8 +22,37 @@ func _ready() -> void:
 func get_ball() -> Ball:
 	return GameManager.current_ball as Ball
 
-func get_player() -> CharacterBody2D:
-	return GameManager.current_player
+func get_nearest_player_team_entity() -> CharacterBody2D:
+	var nearest: CharacterBody2D = null
+	var nearest_dist: float = INF
+	for entity in GameManager.get_player_team_entities():
+		var dist: float = opponent.global_position.distance_to(entity.global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest = entity
+	return nearest
+
+func get_player_team_ball_carrier() -> CharacterBody2D:
+	var carrier: CharacterBody2D = get_ball_carrier()
+	if carrier and GameManager.is_player_team_entity(carrier):
+		return carrier
+	return null
+
+func get_player_distance() -> float:
+	var target: CharacterBody2D = get_player_team_ball_carrier()
+	if target == null:
+		target = get_nearest_player_team_entity()
+	if target == null:
+		return INF
+	return opponent.global_position.distance_to(target.global_position)
+
+func get_player_direction() -> Vector2:
+	var target: CharacterBody2D = get_player_team_ball_carrier()
+	if target == null:
+		target = get_nearest_player_team_entity()
+	if target == null:
+		return Vector2.ZERO
+	return (target.global_position - opponent.global_position).normalized()
 
 func get_ball_distance() -> float:
 	var ball: Ball = get_ball()
@@ -37,18 +66,6 @@ func get_ball_direction() -> Vector2:
 		return Vector2.ZERO
 	return (ball.global_position - opponent.global_position).normalized()
 
-func get_player_distance() -> float:
-	var player: CharacterBody2D = get_player()
-	if player == null:
-		return INF
-	return opponent.global_position.distance_to(player.global_position)
-
-func get_player_direction() -> Vector2:
-	var player: CharacterBody2D = get_player()
-	if player == null:
-		return Vector2.ZERO
-	return (player.global_position - opponent.global_position).normalized()
-
 func get_ball_carrier() -> CharacterBody2D:
 	var ball: Ball = get_ball()
 	if ball and ball.current_state == Ball.BallState.POSSESSED:
@@ -59,8 +76,9 @@ func is_ball_free() -> bool:
 	var ball: Ball = get_ball()
 	return ball != null and ball.current_state == Ball.BallState.FREE
 
-func is_player_carrying_ball() -> bool:
-	return get_ball_carrier() == get_player()
+func is_player_team_carrying_ball() -> bool:
+	var carrier: CharacterBody2D = get_ball_carrier()
+	return GameManager.is_player_team_entity(carrier) if carrier else false
 
 func is_opponent_carrying_ball() -> bool:
 	return ball_control.has_ball

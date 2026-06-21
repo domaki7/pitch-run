@@ -28,4 +28,4 @@ func get_mouse_target() -> Vector2:
 	return player.get_global_mouse_position()
 
 func _is_input_enabled() -> bool:
-	return not GameManager.is_input_disabled()
+	return not GameManager.is_input_disabled() and player == GameManager.current_player

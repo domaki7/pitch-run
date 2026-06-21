@@ -11,6 +11,6 @@ func process_physics(delta: float) -> void:
 	if is_opponent_carrying_ball():
 		transition_requested.emit(self, &"DribbleState")
 		return
-	if is_ball_free() or is_player_carrying_ball():
+	if is_ball_free() or is_player_team_carrying_ball():
 		transition_requested.emit(self, &"ChaseState")
 		return

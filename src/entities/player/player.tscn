@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://player_entity"]
+[gd_scene load_steps=25 format=3 uid="uid://player_entity"]
 
 [ext_resource type="Script" path="res://src/entities/player/player.gd" id="1_player_script"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/player_default.svg" id="2_player_texture"]
@@ -14,6 +14,12 @@
 [ext_resource type="Script" path="res://src/entities/player/states/tackle_state.gd" id="12_tackle_state"]
 [ext_resource type="PackedScene" path="res://src/components/tackle_hitbox_component.tscn" id="13_tackle_hitbox"]
 [ext_resource type="PackedScene" path="res://src/components/tackle_hurtbox_component.tscn" id="14_tackle_hurtbox"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/idle_state.gd" id="15_ai_idle"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/support_run_state.gd" id="16_ai_support"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/chase_state.gd" id="17_ai_chase"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/dribble_state.gd" id="18_ai_dribble"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/pass_state.gd" id="19_ai_pass"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/shoot_state.gd" id="20_ai_shoot"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_bg"]
 bg_color = Color(0.15, 0.15, 0.15, 0.8)
@@ -68,6 +74,24 @@ script = ExtResource("7_sprint_state")
 
 [node name="TackleState" type="Node" parent="StateMachine"]
 script = ExtResource("12_tackle_state")
+
+[node name="AIIdleState" type="Node" parent="StateMachine"]
+script = ExtResource("15_ai_idle")
+
+[node name="AISupportRunState" type="Node" parent="StateMachine"]
+script = ExtResource("16_ai_support")
+
+[node name="AIChaseState" type="Node" parent="StateMachine"]
+script = ExtResource("17_ai_chase")
+
+[node name="AIDribbleState" type="Node" parent="StateMachine"]
+script = ExtResource("18_ai_dribble")
+
+[node name="AIPassState" type="Node" parent="StateMachine"]
+script = ExtResource("19_ai_pass")
+
+[node name="AIShootState" type="Node" parent="StateMachine"]
+script = ExtResource("20_ai_shoot")
 
 [node name="MovementComponent" parent="." instance=ExtResource("8_movement")]
 

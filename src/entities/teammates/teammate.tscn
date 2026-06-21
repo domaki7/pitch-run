@@ -1,0 +1,123 @@
+[gd_scene load_steps=25 format=3 uid="uid://teammate_entity"]
+
+[ext_resource type="Script" path="res://src/entities/teammates/teammate.gd" id="1_teammate_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/teammates/teammate_default.svg" id="2_teammate_texture"]
+[ext_resource type="PackedScene" path="res://src/components/state_machine.tscn" id="3_state_machine"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/idle_state.gd" id="4_ai_idle"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/support_run_state.gd" id="5_ai_support"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/chase_state.gd" id="6_ai_chase"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/dribble_state.gd" id="7_ai_dribble"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/pass_state.gd" id="8_ai_pass"]
+[ext_resource type="Script" path="res://src/entities/teammates/states/shoot_state.gd" id="9_ai_shoot"]
+[ext_resource type="Script" path="res://src/entities/player/states/idle_state.gd" id="10_player_idle"]
+[ext_resource type="Script" path="res://src/entities/player/states/run_state.gd" id="11_player_run"]
+[ext_resource type="Script" path="res://src/entities/player/states/dribble_state.gd" id="12_player_dribble"]
+[ext_resource type="Script" path="res://src/entities/player/states/sprint_state.gd" id="13_player_sprint"]
+[ext_resource type="Script" path="res://src/entities/player/states/tackle_state.gd" id="14_player_tackle"]
+[ext_resource type="PackedScene" path="res://src/components/movement_component.tscn" id="15_movement"]
+[ext_resource type="PackedScene" path="res://src/components/stamina_component.tscn" id="16_stamina"]
+[ext_resource type="PackedScene" path="res://src/components/ball_control_component.tscn" id="17_ball_control"]
+[ext_resource type="PackedScene" path="res://src/components/kick_component.tscn" id="18_kick"]
+[ext_resource type="PackedScene" path="res://src/components/tackle_hitbox_component.tscn" id="19_tackle_hitbox"]
+[ext_resource type="PackedScene" path="res://src/components/tackle_hurtbox_component.tscn" id="20_tackle_hurtbox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_bg"]
+bg_color = Color(0.15, 0.15, 0.15, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_fill"]
+bg_color = Color(0.2, 0.8, 0.2, 1.0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ball_detect"]
+radius = 25.0
+
+[node name="Teammate" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_teammate_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_teammate_texture")
+
+[node name="BallDetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallDetectionArea"]
+shape = SubResource("CircleShape2D_ball_detect")
+
+[node name="StateMachine" parent="." instance=ExtResource("3_state_machine")]
+
+[node name="AIIdleState" type="Node" parent="StateMachine"]
+script = ExtResource("4_ai_idle")
+
+[node name="AISupportRunState" type="Node" parent="StateMachine"]
+script = ExtResource("5_ai_support")
+
+[node name="AIChaseState" type="Node" parent="StateMachine"]
+script = ExtResource("6_ai_chase")
+
+[node name="AIDribbleState" type="Node" parent="StateMachine"]
+script = ExtResource("7_ai_dribble")
+
+[node name="AIPassState" type="Node" parent="StateMachine"]
+script = ExtResource("8_ai_pass")
+
+[node name="AIShootState" type="Node" parent="StateMachine"]
+script = ExtResource("9_ai_shoot")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("10_player_idle")
+
+[node name="RunState" type="Node" parent="StateMachine"]
+script = ExtResource("11_player_run")
+
+[node name="DribbleState" type="Node" parent="StateMachine"]
+script = ExtResource("12_player_dribble")
+
+[node name="SprintState" type="Node" parent="StateMachine"]
+script = ExtResource("13_player_sprint")
+
+[node name="TackleState" type="Node" parent="StateMachine"]
+script = ExtResource("14_player_tackle")
+
+[node name="MovementComponent" parent="." instance=ExtResource("15_movement")]
+
+[node name="StaminaComponent" parent="." instance=ExtResource("16_stamina")]
+
+[node name="BallControlComponent" parent="." instance=ExtResource("17_ball_control")]
+
+[node name="KickComponent" parent="." instance=ExtResource("18_kick")]
+
+[node name="TackleHitboxComponent" parent="." instance=ExtResource("19_tackle_hitbox")]
+collision_layer = 16
+collision_mask = 128
+
+[node name="TackleHurtboxComponent" parent="." instance=ExtResource("20_tackle_hurtbox")]
+collision_layer = 64
+
+[node name="StaminaBar" type="ProgressBar" parent="."]
+visible = false
+offset_left = -16.0
+offset_top = 16.0
+offset_right = 16.0
+offset_bottom = 20.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("StyleBoxFlat_stamina_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
+
+[node name="StateLabel" type="Label" parent="."]
+visible = false
+offset_left = -40.0
+offset_top = -28.0
+offset_right = 40.0
+offset_bottom = -14.0
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
